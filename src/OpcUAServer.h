@@ -26,6 +26,7 @@ private:
    uint16_t port;
    UA_Server *server;
    UA_ServerConfig *config;
+   UA_ByteString *cert;
    std::string name;
    std::string locale;
    OpcServerRole role;
@@ -70,6 +71,14 @@ public:
     * @param value
     */
    void setRole(const OpcServerRole value);
+
+   void resetBaseConfig();
+   /**
+    * Call this after you set base settings for the server and in before you add
+    * the server to a OpcUANodeHandler
+    * @brief setBaseConfigDone
+    */
+   void setBaseConfigDone();
 };
 
 } /* namespace n_opcua */

@@ -26,11 +26,28 @@ void OpcUAServer::setRole(const OpcServerRole value) {
             UA_APPLICATIONTYPE_CLIENTANDSERVER;
 }
 
+void OpcUAServer::resetBaseConfig() {
+   if (server)
+      UA_Server_delete(server);
+   server = nullptr;
+
+   UA_ServerConfig_delete(config);
+
+   config = nullptr;
+   config = UA_ServerConfig_new_minimal(port, cert);
+}
+
+void OpcUAServer::setBaseConfigDone() {
+   if (server)
+      UA_Server_delete(server);
+
+   server = UA_Server_new(config);
+}
+
 OpcUAServer::OpcUAServer(uint16_t sport) :
    running(true),
    port(sport),
-   server(nullptr) {
-   UA_ByteString *cert = nullptr;
+   server(nullptr), cert(nullptr) {
 
    config = UA_ServerConfig_new_minimal(port, cert);
 
@@ -45,7 +62,6 @@ OpcUAServer::~OpcUAServer() {
 }
 
 void OpcUAServer::run() {
-   server = UA_Server_new(config);
    UA_Server_run(server, &running);
 }
 
