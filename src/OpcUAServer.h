@@ -6,7 +6,7 @@
  * <tobias.johannes.klausmann@mni.thm.de>
  */
 
-#include <open62541/open62541.h>
+#include <open62541.h>
 #include <string>
 
 #ifndef SRC_OPCUASERVER_H_
