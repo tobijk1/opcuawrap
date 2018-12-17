@@ -6,7 +6,9 @@
  * <tobias.johannes.klausmann@mni.thm.de>
  */
 
-#include <open62541.h>
+#include <open62541/ua_server.h>
+#include <open62541/ua_server_config.h>
+#include <open62541/ua_config_default.h>
 #include <string>
 
 #ifndef SRC_OPCUASERVER_H_

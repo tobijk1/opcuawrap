@@ -10,7 +10,7 @@ INCLUDE (CheckIncludeFile)
 
 set (CPACK_PACKAGE_VERSION_MAJOR "0")
 set (CPACK_PACKAGE_VERSION_MINOR "0")
-set (CPACK_PACKAGE_VERSION_PATCH "4")
+set (CPACK_PACKAGE_VERSION_PATCH "5")
 
 #set global Project name here
 set (PROJECT_NAME "opcuawrap")
