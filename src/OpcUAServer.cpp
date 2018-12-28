@@ -48,7 +48,9 @@ void OpcUAServer::setDescription(const std::string value) {
    description = value;
 }
 
-bool OpcUAServer::registerAtLDS(string ldsServerURI) {
+bool OpcUAServer::registerAtLDS(std::string ldsServerURI) {
+
+   _ldsServerURI = ldsServerURI;
 
    UA_Client *ldsRegisterClient = UA_Client_new(UA_ClientConfig_default);
 
@@ -56,7 +58,7 @@ bool OpcUAServer::registerAtLDS(string ldsServerURI) {
    UA_StatusCode ret =
        UA_Server_addPeriodicServerRegisterCallback(server,
                                                    ldsRegisterClient,
-                                                   ldsServerURI.c_str(),
+                                                   _ldsServerURI.c_str(),
                                                    10 * 60 * 1000, 500,
                                                    nullptr);
 
@@ -64,17 +66,18 @@ bool OpcUAServer::registerAtLDS(string ldsServerURI) {
        UA_Client_disconnect(ldsRegisterClient);
        UA_Client_delete(ldsRegisterClient);
        ldsRegisterClient = nullptr;
+       _ldsServerURI = "";
 
        return false;
    }
-
-   _ldsServerURI = ldsServerURI;
-
    return true;
 }
 
-bool OpcUAServer::unregisterAtLDS()
-{
+bool OpcUAServer::unregisterAtLDS() {
+
+   if (!ldsRegisterClient)
+      return false;
+
    UA_StatusCode ret = UA_Server_unregister_discovery(server,
                                                       ldsRegisterClient);
 
@@ -99,9 +102,8 @@ OpcUAServer::OpcUAServer(uint16_t sport) :
 }
 
 OpcUAServer::~OpcUAServer() {
-   if (ldsRegisterClient)
-      unregisterAtLDS();
 
+   unregisterAtLDS();
 
    if (server)
       UA_Server_delete(server);
