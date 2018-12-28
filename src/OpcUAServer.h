@@ -9,6 +9,9 @@
 #include <open62541/ua_server.h>
 #include <open62541/ua_server_config.h>
 #include <open62541/ua_config_default.h>
+
+#include <open62541/ua_client.h>
+
 #include <string>
 
 #ifndef SRC_OPCUASERVER_H_
@@ -31,7 +34,11 @@ private:
    UA_ByteString *cert;
    std::string name;
    std::string locale;
+   std::string description;
    OpcServerRole role;
+
+   UA_Client *ldsRegisterClient;
+   std::string _ldsServerURI;
 public:
    /**
     * @brief OpcUAServer Default constructor for a new OpcUAServer object
@@ -81,6 +88,25 @@ public:
     * @brief setBaseConfigDone
     */
    void setBaseConfigDone();
+
+   /**
+    * @brief setDescription
+    * @param value
+    */
+   void setDescription(const std::string value);
+
+   /**
+    * @brief registerAtLDS
+    * @param ldsServerURI
+    * @return
+    */
+   bool registerAtLDS(std::string ldsServerURI);
+
+   /**
+    * @brief unregisterAtLDS
+    * @return
+    */
+   bool unregisterAtLDS();
 };
 
 } /* namespace n_opcua */
