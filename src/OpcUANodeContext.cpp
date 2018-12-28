@@ -346,19 +346,32 @@ void OpcUAObjectNodeContext::deleteAttrDescription() {
  */
 
 void OpcUAMethodNodeContext::freeInputArguments() {
-   if (inputArguments)
-      free(inputArguments);
+   if (inputArguments && inArgumentCount > 0) {
+      UA_Array_delete(inputArguments,
+                      inArgumentCount,
+                      &UA_TYPES[UA_TYPES_ARGUMENT]);
+   }
+
+   inputArguments = nullptr;
 }
 
 void OpcUAMethodNodeContext::freeOutputArguments() {
-   if (outputArguments)
-      free(outputArguments);
+   if (outputArguments && outArgumentCount > 0) {
+      UA_Array_delete(outputArguments,
+                      outArgumentCount,
+                      &UA_TYPES[UA_TYPES_ARGUMENT]);
+   }
+
+   outputArguments = nullptr;
 }
 
 UA_Argument *OpcUAMethodNodeContext::allocArguments(uint64_t argCount) {
    UA_Argument *args = nullptr;
-   if (argCount > 0)
-      args = static_cast<UA_Argument *> (calloc(argCount, sizeof(UA_Argument)));
+   if (argCount > 0) {
+      args =
+            static_cast<UA_Argument *>
+            (UA_Array_new(argCount, &UA_TYPES[UA_TYPES_ARGUMENT]));
+   }
    return args;
 }
 
@@ -373,9 +386,8 @@ void OpcUAMethodNodeContext::initArguments(uint64_t argCount,
       UA_Argument_init(&args[count]);
       args[count].valueRank = -1; // set to scalar by default
       std::string str = "var" + std::to_string(count);
-      args[count].description = UA_LOCALIZEDTEXT((char *)_locale.c_str(),
-                                                 (char *)_description.c_str());
-      args[count].name = UA_STRING((char *)(_name.c_str()));
+      args[count].description = UA_LOCALIZEDTEXT_ALLOC((char *)_locale.c_str(),
+                                                       (char *)_description.c_str());
       args[count].name = UA_STRING((char *)(_name.c_str()));
       count++;
    }
