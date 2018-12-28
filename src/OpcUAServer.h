@@ -13,6 +13,7 @@
 #include <open62541/ua_client.h>
 
 #include <string>
+#include <set>
 
 #ifndef SRC_OPCUASERVER_H_
 #define SRC_OPCUASERVER_H_
@@ -37,8 +38,15 @@ private:
    std::string description;
    OpcServerRole role;
 
+   /* LDS Registry */
    UA_Client *ldsRegisterClient;
    std::string _ldsServerURI;
+
+   /* Capabilities */
+   std::set<std::string> caps;
+
+   void populateCapabilites();
+   void removeCapabilites();
 public:
    /**
     * @brief OpcUAServer Default constructor for a new OpcUAServer object
@@ -94,6 +102,24 @@ public:
     * @param value
     */
    void setDescription(const std::string value);
+
+   /**
+    * @brief addCapabilities
+    * @param cap
+    */
+   void addCapabilities(std::string cap);
+
+
+   /**
+    * @brief removeCapability
+    * @param cap
+    */
+   void removeCapability(std::string cap);
+
+   /**
+    * @brief removeAllCapabilites
+    */
+   void removeAllCapabilites();
 
    /**
     * @brief registerAtLDS
