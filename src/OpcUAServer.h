@@ -45,7 +45,14 @@ private:
    /* Capabilities */
    std::set<std::string> caps;
 
+   /**
+    * @brief Push the capabilites to the actual config (helper)
+    */
    void populateCapabilites();
+
+   /**
+    * @brief Remove the capabilites from the server (helper)
+    */
    void removeCapabilites();
 public:
    /**
@@ -63,7 +70,7 @@ public:
     */
    void run();
    /**
-    * @brief Terminate the server  execution
+    * @brief Terminate the server execution
     */
    void terminate();
 
@@ -75,6 +82,10 @@ public:
     */
    void setName(std::string sname, std::string locale = "en-US");
 
+   /**
+    * @brief Return the open62541 server struct
+    * @return
+    */
    UA_Server *getServer() {
       return server;
    }
@@ -89,6 +100,10 @@ public:
     */
    void setRole(const OpcServerRole value);
 
+   /**
+    * @brief Reset the config to a basic state
+    * @note Can only be called before executing th run() method
+    */
    void resetBaseConfig();
    /**
     * Call this after you set base settings for the server and in before you add
@@ -98,39 +113,40 @@ public:
    void setBaseConfigDone();
 
    /**
-    * @brief setDescription
-    * @param value
+    * @brief Set the server description
+    * @param value the description
     */
    void setDescription(const std::string value);
 
    /**
-    * @brief addCapabilities
+    * @brief Add a capability the server adervertises with its config
     * @param cap
     */
    void addCapabilities(std::string cap);
 
-
    /**
-    * @brief removeCapability
+    * @brief Remove a capability the server adervertises with its config
     * @param cap
     */
    void removeCapability(std::string cap);
 
    /**
-    * @brief removeAllCapabilites
+    * @brief Remove all capabilites the server adervertises with its config
     */
    void removeAllCapabilites();
 
    /**
-    * @brief registerAtLDS
-    * @param ldsServerURI
-    * @return
+    * @brief Register the server at a local discovery service (LDS)
+    * @param ldsServerURI the server URI to register at (e.g.
+    * "opc.tcp://localhost:4840")
+    * @return true on success, else false
     */
    bool registerAtLDS(std::string ldsServerURI);
 
    /**
-    * @brief unregisterAtLDS
-    * @return
+    * @brief Unregister the server at a previously registered local discovery
+    *  service (LDS)
+    * @return true on success, else false
     */
    bool unregisterAtLDS();
 };
