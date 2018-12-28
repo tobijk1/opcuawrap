@@ -223,14 +223,30 @@ void OpcUANodeContext::writeToServer(UA_Variant var) {
  * OpcUAVarNodeContext
  */
 
+OpcUAVarNodeContext::~OpcUAVarNodeContext() {
+   deleteAttrName();
+   deleteAttrDescription();
+}
+
 void OpcUAVarNodeContext::setAttrName() {
+   deleteAttrName();
    varAttr.displayName = UA_LOCALIZEDTEXT_ALLOC((char *) _locale.c_str(),
                                                 (char *) _name.c_str());
 }
 
+void OpcUAVarNodeContext::deleteAttrName() {
+   UA_LocalizedText_deleteMembers(&varAttr.displayName);
+}
+
 void OpcUAVarNodeContext::setAttrDescription() {
+   deleteAttrDescription();
+
    varAttr.description = UA_LOCALIZEDTEXT_ALLOC((char *) _locale.c_str(),
                                                 (char *) _description.c_str());
+}
+
+void OpcUAVarNodeContext::deleteAttrDescription() {
+   UA_LocalizedText_deleteMembers(&varAttr.description);
 }
 
 void OpcUAVarNodeContext::setAttrDataType() {
@@ -283,6 +299,11 @@ bool OpcUAObjectNodeContext::checkTypeNumber(int8_t objecttypenr) {
    return false;
 }
 
+OpcUAObjectNodeContext::~OpcUAObjectNodeContext() {
+   deleteAttrName();
+   deleteAttrDescription();
+}
+
 bool OpcUAObjectNodeContext::setObjectType(std::string objecttypename) {
    int8_t tmp = checkTypeName(objecttypename);
    if (tmp < 0)
@@ -300,14 +321,24 @@ bool OpcUAObjectNodeContext::setObjectType(int8_t objectTypeNr) {
 }
 
 void OpcUAObjectNodeContext::setAttrName() {
+   deleteAttrName();
    objAttr.displayName = UA_LOCALIZEDTEXT_ALLOC((char *) _locale.c_str(),
                                                 (char *) _name.c_str());
 
 }
 
+void OpcUAObjectNodeContext::deleteAttrName() {
+   UA_LocalizedText_deleteMembers(&objAttr.displayName);
+}
+
 void OpcUAObjectNodeContext::setAttrDescription() {
+   deleteAttrDescription();
    objAttr.description = UA_LOCALIZEDTEXT_ALLOC((char *) _locale.c_str(),
                                                 (char *) _description.c_str());
+}
+
+void OpcUAObjectNodeContext::deleteAttrDescription() {
+   UA_LocalizedText_deleteMembers(&objAttr.description);
 }
 
 /*
@@ -353,6 +384,9 @@ void OpcUAMethodNodeContext::initArguments(uint64_t argCount,
 OpcUAMethodNodeContext::~OpcUAMethodNodeContext() {
    freeInputArguments();
    freeOutputArguments();
+
+   deleteAttrName();
+   deleteAttrDescription();
 }
 
 void OpcUAMethodNodeContext::setExecutable(bool executable) {
@@ -427,10 +461,18 @@ void OpcUAMethodNodeContext::setAttrName() {
             static_cast<const char *>(_name.c_str()));
 }
 
+void OpcUAMethodNodeContext::deleteAttrName() {
+   UA_LocalizedText_deleteMembers(&methodAttr.displayName);
+}
+
 void OpcUAMethodNodeContext::setAttrDescription() {
    methodAttr.description = UA_LOCALIZEDTEXT_ALLOC(
             static_cast<const char *>(_locale.c_str()),
             static_cast<const char *>(_description.c_str()));
+}
+
+void OpcUAMethodNodeContext::deleteAttrDescription() {
+   UA_LocalizedText_deleteMembers(&methodAttr.description);
 }
 
 void OpcUAMethodNodeContext::setAttrExecutable(bool executable) {

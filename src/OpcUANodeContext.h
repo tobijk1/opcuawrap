@@ -244,7 +244,13 @@ public:
    virtual void setAttrName() {
       //assert("Make sure nobody calls this virtual method" == "");
    }
+   virtual void deleteAttrName() {
+      //assert("Make sure nobody calls this virtual method" == "");
+   }
    virtual void setAttrDescription() {
+      //assert("Make sure nobody calls this virtual method" == "");
+   }
+   virtual void deleteAttrDescription() {
       //assert("Make sure nobody calls this virtual method" == "");
    }
    virtual void setAttrDataType() {
@@ -591,7 +597,7 @@ public:
    /**
     * @brief Default deconstructor
     */
-   virtual ~OpcUAVarNodeContext() {}
+   virtual ~OpcUAVarNodeContext();
 
    /**
     * @brief Set the read method for this variable
@@ -658,10 +664,20 @@ public:
    void setAttrName();
 
    /**
+    * @brief Delete the attribute name of the node
+    */
+   void deleteAttrName();
+
+   /**
     * @brief Set the attribute description to the node
     */
    void setAttrDescription();
 
+   /**
+    * @brief Delete the attribute description of the node
+    */
+
+   void deleteAttrDescription();
    /**
     * @brief Set the data type for the node
     */
@@ -767,7 +783,7 @@ public:
    /**
     * @brief The default deconstructor for this class
     */
-   virtual ~OpcUAObjectNodeContext() {}
+   virtual ~OpcUAObjectNodeContext();
 
    /**
     * Set the Type by name of the objecttype, at the time of writting this
@@ -807,9 +823,19 @@ public:
    void setAttrName();
 
    /**
+    * @brief Delete the attribute name of the node
+    */
+   void deleteAttrName();
+
+   /**
     * @brief Set the attribute description
     */
    void setAttrDescription();
+
+   /**
+    * @brief Delete the attribue description of the node
+    */
+   void deleteAttrDescription();
 };
 
 /*
@@ -1085,9 +1111,19 @@ public:
    void setAttrName();
 
    /**
+    * @brief Delete the node attribute name of the node
+    */
+   void deleteAttrName();
+
+   /**
     * @brief Set the attibute description of the node
     */
    void setAttrDescription();
+
+   /**
+    * @brief Delete the attribute description of the node
+    */
+   void deleteAttrDescription();
 
    /**
     * @brief Set the attributes executable status
