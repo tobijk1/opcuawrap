@@ -52,7 +52,7 @@ bool OpcUAServer::registerAtLDS(std::string ldsServerURI) {
 
    _ldsServerURI = ldsServerURI;
 
-   UA_Client *ldsRegisterClient = UA_Client_new(UA_ClientConfig_default);
+   ldsRegisterClient = UA_Client_new(UA_ClientConfig_default);
 
    // periodic server register after 10 Minutes, delay first register for 500ms
    UA_StatusCode ret =
@@ -121,11 +121,27 @@ void OpcUAServer::terminate() {
 void OpcUAServer::setName(string sname, string slocale) {
    name = sname;
    locale = slocale;
+
+   UA_LocalizedText_deleteMembers(&config->applicationDescription.applicationName);
+   UA_String_deleteMembers(&config->customHostname);
+   UA_String_deleteMembers(&config->mdnsServerName);
+
    config->applicationDescription.applicationName =
          UA_LOCALIZEDTEXT_ALLOC((char *)(locale.c_str()),
                                 (char *) name.c_str());
 
    config->customHostname = UA_String_fromChars(sname.c_str());
+   config->mdnsServerName = UA_String_fromChars(sname.c_str());
+
+   for (uint64_t i = 0; i < config->endpointsSize; i++) {
+      UA_LocalizedText_deleteMembers(
+               &config->endpoints[i].endpointDescription.server.applicationName);
+      config->endpoints[i].endpointDescription.server.applicationName =
+            UA_LOCALIZEDTEXT_ALLOC((char *)(locale.c_str()),
+                                   (char *) name.c_str());
+
+   }
+
 }
 
 } /* namespace n_opcua */
