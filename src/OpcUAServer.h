@@ -21,6 +21,7 @@
 enum OpcServerRole {
    RoleServer = 0,
    RoleClientServer,
+   RoleDiscoveryServer,
 };
 
 
@@ -44,6 +45,9 @@ private:
 
    /* Capabilities */
    std::set<std::string> caps;
+
+   /* URI */
+   std::string _uri;
 
    /**
     * @brief Push the capabilites to the actual config (helper)
@@ -134,6 +138,17 @@ public:
     * @brief Remove all capabilites the server adervertises with its config
     */
    void removeAllCapabilites();
+
+   /**
+    * @brief Set the application URI for the server description
+    * @param URI the URI to set
+    */
+   void setURI(std::string URI);
+
+   /**
+    * @brief Remove the appication URI from the server description
+    */
+   void removeURI();
 
    /**
     * @brief Register the server at a local discovery service (LDS)

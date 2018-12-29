@@ -24,6 +24,9 @@ void OpcUAServer::setRole(const OpcServerRole value) {
    if (value == OpcServerRole::RoleClientServer)
       config->applicationDescription.applicationType =
             UA_APPLICATIONTYPE_CLIENTANDSERVER;
+   if (value == OpcServerRole::RoleDiscoveryServer)
+      config->applicationDescription.applicationType =
+            UA_APPLICATIONTYPE_DISCOVERYSERVER;
 }
 
 void OpcUAServer::resetBaseConfig() {
@@ -88,6 +91,19 @@ void OpcUAServer::removeAllCapabilites() {
 
    removeCapabilites();
 
+}
+
+void OpcUAServer::setURI(string URI) {
+   removeURI();
+
+   _uri = URI;
+
+   config->applicationDescription.applicationUri =
+           UA_STRING_ALLOC(_uri.c_str());
+}
+
+void OpcUAServer::removeURI() {
+   UA_String_deleteMembers(&config->applicationDescription.applicationUri);
 }
 
 bool OpcUAServer::registerAtLDS(std::string ldsServerURI) {
