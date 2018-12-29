@@ -93,13 +93,15 @@ void OpcUAServer::removeAllCapabilites() {
 
 }
 
-void OpcUAServer::setURI(string URI) {
+void OpcUAServer::setURI(std::string URI) {
+
    removeURI();
 
    _uri = URI;
 
    config->applicationDescription.applicationUri =
            UA_STRING_ALLOC(_uri.c_str());
+
 }
 
 void OpcUAServer::removeURI() {
@@ -183,11 +185,10 @@ void OpcUAServer::removeCapabilites() {
 OpcUAServer::OpcUAServer(uint16_t sport) :
    running(true),
    port(sport),
-   server(nullptr), cert(nullptr), ldsRegisterClient(nullptr) {
+   server(nullptr), cert(nullptr), ldsRegisterClient(nullptr), role(RoleServer) {
 
    config = UA_ServerConfig_new_minimal(port, cert);
 
-   role = OpcServerRole::RoleServer;
    config->applicationDescription.applicationType = UA_APPLICATIONTYPE_SERVER;
 }
 

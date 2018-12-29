@@ -31,23 +31,23 @@ class OpcUAServer {
 private:
    bool running;
    uint16_t port;
-   UA_Server *server;
-   UA_ServerConfig *config;
-   UA_ByteString *cert;
    std::string name;
    std::string locale;
    std::string description;
    OpcServerRole role;
+   UA_Server *server;
+   UA_ServerConfig *config;
+   UA_ByteString *cert;
 
-   /* LDS Registry */
-   UA_Client *ldsRegisterClient;
-   std::string _ldsServerURI;
+   /* URI */
+   std::string _uri;
 
    /* Capabilities */
    std::set<std::string> caps;
 
-   /* URI */
-   std::string _uri;
+   /* LDS Registry */
+   std::string _ldsServerURI;
+   UA_Client *ldsRegisterClient;
 
    /**
     * @brief Push the capabilites to the actual config (helper)
