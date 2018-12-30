@@ -214,14 +214,13 @@ void OpcUAServer::setName(string sname, string slocale) {
    locale = slocale;
 
    UA_LocalizedText_deleteMembers(&config->applicationDescription.applicationName);
-   UA_String_deleteMembers(&config->customHostname);
+
    UA_String_deleteMembers(&config->mdnsServerName);
 
    config->applicationDescription.applicationName =
          UA_LOCALIZEDTEXT_ALLOC((char *)(locale.c_str()),
                                 (char *) name.c_str());
 
-   config->customHostname = UA_String_fromChars(sname.c_str());
    config->mdnsServerName = UA_String_fromChars(sname.c_str());
 
    for (uint64_t i = 0; i < config->endpointsSize; i++) {
