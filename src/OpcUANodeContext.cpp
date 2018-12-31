@@ -21,6 +21,7 @@ void OpcUANodeContext::initDefault() {
    setQualifiedName("");
    setDefaultParent();
    setLocale("en-US");
+   setNamespace(0);
 
    _nodeHandler->addNodeToIndex(this);
 }
@@ -56,6 +57,9 @@ OpcUANodeContext::OpcUANodeContext(OpcUANodeHandler *nodeHandler) :
    _writeable(false),
    _active(false) {
    _node = new UA_NodeId();
+   _node->namespaceIndex = 0;
+   _node->identifierType = UA_NODEIDTYPE_NUMERIC;
+
    _default_parent = new UA_NodeId();
    initDefault();
 }
@@ -113,7 +117,7 @@ bool OpcUANodeContext::setName(std::string name) {
    /* Set node name */
    if (!_node)
       return false;
-   *_node = UA_NODEID_STRING(1, (char *) _name.c_str());
+   *_node = UA_NODEID_STRING(getNamespace(), (char *) _name.c_str());
 
    setAttrName();
 
@@ -128,7 +132,7 @@ void OpcUANodeContext::setDescription(std::string description) {
 void OpcUANodeContext::setQualifiedName(std::string qualifiedName) {
    _qualifiedNameStr = qualifiedName;
    /* Set qualified name for node */
-   _qualifiedName = UA_QUALIFIEDNAME(1, (char *)_qualifiedNameStr.c_str());
+   _qualifiedName = UA_QUALIFIEDNAME(getNamespace(), (char *)_qualifiedNameStr.c_str());
 }
 
 bool OpcUANodeContext::addChild(OpcUANodeContext *child) {
@@ -158,6 +162,16 @@ bool OpcUANodeContext::isChild(OpcUANodeContext *node) {
 void OpcUANodeContext::setDataTypeNumber(int16_t dataTypeNr) {
    _dataTypeNr = dataTypeNr;
    setAttrDataType();
+}
+
+void OpcUANodeContext::setNamespace(uint16_t namespaceID) {
+   nsID = namespaceID;
+   if (_node)
+      _node->namespaceIndex = nsID;
+}
+
+uint16_t OpcUANodeContext::getNamespace() {
+   return nsID;
 }
 
 void OpcUANodeContext::convertFromOPC(std::string *value,

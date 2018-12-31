@@ -58,6 +58,8 @@ protected:
 
    bool _active;
 
+   uint16_t nsID;
+
 public:
    /**
     * Constructor for OpcUANodeContext with direct initialization of our node
@@ -239,6 +241,18 @@ public:
    int16_t getDataTypeNumber() {
       return _dataTypeNr;
    }
+
+   /**
+    * @brief Set the namespace id this node will get added to
+    * @param namespaceID The ID of the namespace this node should be added to
+    */
+   void setNamespace(uint16_t namespaceID);
+
+   /**
+    * @brief Return the ID of the namespace this node belongs to
+    * @return
+    */
+   uint16_t getNamespace();
 
    /* Methods to implement */
    virtual void setAttrName() {
