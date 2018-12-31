@@ -129,7 +129,7 @@ bool OpcUANodeHandler::addObjectNodeToServer(OpcUAObjectNodeContext *ctx) {
    if (!checkServer())
       return false;
 
-   UA_Server_addObjectNode(_server->getServer(), UA_NODEID_NULL, *ctx->getParent(),
+   UA_Server_addObjectNode(_server->getServer(), *ctx->getNodeId(), *ctx->getParent(),
             UA_NODEID_NUMERIC(0, UA_NS0ID_ORGANIZES), *ctx->getQualifiedName(),
             UA_NODEID_NUMERIC(0, ctx->getObjectType()), *ctx->getObjectAttr(),
             ctx, ctx->getNodeId());
@@ -146,7 +146,7 @@ bool OpcUANodeHandler::addMethodNodeToServer(OpcUAMethodNodeContext *ctx) {
    UA_MethodCallback callback;
    callback = &onMethodCallCallback;
 
-   UA_Server_addMethodNode(_server->getServer(), UA_NODEID_NULL,
+   UA_Server_addMethodNode(_server->getServer(), *ctx->getNodeId(),
                            *ctx->getParent(),
                            UA_NODEID_NUMERIC(0, UA_NS0ID_HASORDEREDCOMPONENT),
                            *ctx->getQualifiedName(),
