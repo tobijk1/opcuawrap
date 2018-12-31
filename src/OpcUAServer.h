@@ -164,6 +164,13 @@ public:
     * @return true on success, else false
     */
    bool unregisterAtLDS();
+
+   /**
+    * @brief Add a new namespace to the server
+    * @param ns the name for the new namespace
+    * @return the Namespace index for nodes to attach
+    */
+   uint16_t addNamespace(std::string ns);
 };
 
 } /* namespace n_opcua */

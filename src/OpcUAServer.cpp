@@ -150,6 +150,10 @@ bool OpcUAServer::unregisterAtLDS() {
    return true;
 }
 
+uint16_t OpcUAServer::addNamespace(std::string ns) {
+   return UA_Server_addNamespace(server, ns.c_str());
+}
+
 void OpcUAServer::populateCapabilites() {
    std::set<std::string>::iterator it;
 
