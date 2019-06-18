@@ -39,8 +39,14 @@ private:
 
    std::unordered_set<OpcUANodeContext *> childset;
 
+   /**
+    * @brief Set a default node parent
+    */
    void setDefaultParent();
 
+   /**
+    * @brief Initialize the default node state
+    */
    void initDefault();
 protected:
    /* the name of the node */
@@ -62,14 +68,15 @@ protected:
 
 public:
    /**
-    * Constructor for OpcUANodeContext with direct initialization of our node
+    * @brief Constructor for OpcUANodeContext with direct initialization of our node
     * @param node The node our context belongs to
+    * @param nodeHandler the nodeHandler to use
     * @return a new OpcUANodeContext object
     */
    OpcUANodeContext(UA_NodeId* node, OpcUANodeHandler *nodeHandler);
 
    /**
-    * Constructor for OpcUANodeContext with the node initialized to NULL
+    * @brief Constructor for OpcUANodeContext with the node initialized to NULL
     * @return a new OpcUANodeContext object
     */
    OpcUANodeContext(OpcUANodeHandler *nodeHandler);
@@ -82,14 +89,14 @@ public:
    /**
     * @brief Set a node the Context belongs to, only works if the node is not
     * already set
-    * @param the node to set
+    * @param node the node to set
     * @return true if the node was set, false if it was not set
     */
    bool setNode(UA_NodeId *node);
 
    /**
     * @brief Set the parent node of our object in the Node tree
-    * @param The parent of ourself
+    * @param parent_ctx The parent of ourself
     * @return true if the parent was set, else false
     */
    bool setParent(OpcUANodeContext *parent_ctx);
@@ -123,7 +130,7 @@ public:
 
    /**
     * @brief Set the locale of this node
-    * @param The locale short - e.g "de-DE"
+    * @param locale The locale short - e.g "de-DE"
     */
    void setLocale(std::string locale) {
       _locale = locale;
@@ -139,7 +146,7 @@ public:
 
    /**
     * @brief Set a new name for the node, only works if the node is set
-    * @param the new name to set
+    * @param name the new name to set
     * @return true if the name was set, else false
     */
    bool setName(std::string name);
@@ -154,7 +161,7 @@ public:
    /**
     * @brief Set a new qualified name for the node, only works if the node is
     * set
-    * @param the new name to set
+    * @param qualifiedName the new name to set
     * @return true if the qualified name was set, else false
     */
    void setQualifiedName(std::string qualifiedName);
@@ -177,21 +184,21 @@ public:
 
    /**
     * @brief Add a new child node to our index
-    * @param the child node
+    * @param child the child node
     * @return true if the child was added, else false
     */
    bool addChild(OpcUANodeContext *child);
 
    /**
     * @brief Remove a child from the index
-    * @param The child
+    * @param child The child to remove
     * @return true if removed, else false
     */
    bool removeChild(OpcUANodeContext *child);
 
    /**
     * @brief Check if a node is really our child
-    * @param the Node in question
+    * @param node the Node in question
     * @return true if it is our child, else false
     */
    bool isChild(OpcUANodeContext *node);
@@ -213,7 +220,7 @@ public:
    /**
     * @brief Set the type number by guessing the righ type internally, see
     * UA_DataType to set it directly with setDataTypeNumber()
-    * @param dattypename
+    * @param dattype the dattye to set
     * @return true if the type got matched an set, else false
     */
    template <typename T>
@@ -230,7 +237,7 @@ public:
 
    /**
     * @brief Set the type number directly, see UA_DataType for more information
-    * @param typeNumber the number to set
+    * @param dataTypeNr the number to set
     */
    void setDataTypeNumber(int16_t dataTypeNr);
 
@@ -292,7 +299,7 @@ public:
 
    template <typename T>
    /**
-    * @brief convertTypeToOpen62541Type
+    * @brief Convert a c++ type to an open62541 representation
     * @param type
     * @return open62541 type definition or -1 if not found
     *
@@ -371,7 +378,7 @@ public:
    template <typename V>
    /**
     * @brief Convert a value to a templateable value
-    * @param the templateable value, e.g. int
+    * @param value the templateable value, e.g. int
     * @param opcval the value to copy from
     */
    void convertFromOPC(V *value, const UA_Variant *opcval) {
@@ -382,7 +389,7 @@ public:
    template <typename V>
    /**
     * @brief Convert a value to a templateable value
-    * @param the templateable value, e.g. int
+    * @param value the templateable value, e.g. int
     * @param opcval the value to copy from
     */
    void convertFromOPC(std::vector<V> *value, const UA_Variant *opcval) {
@@ -403,7 +410,7 @@ public:
    template <typename V>
    /**
     * @brief Convert a value to a templateable value
-    * @param the templateable value, e.g. int
+    * @param value the templateable value, e.g. int
     * @param opcval the value to copy from
     */
    void convertFromOPC(V *value, const UA_DataValue *opcval) {
@@ -446,7 +453,7 @@ public:
    /**
     * @brief Convert a std::vector to a open62541 Variant array
     * @param value the variant to fill
-    * @param userval the vector to copy from
+    * @param uservec the vector to copy from
     */
    void convertToOPC(UA_Variant *value, const std::vector<V> *uservec) {
       uint64_t arraycount = 0;
@@ -476,7 +483,7 @@ public:
    /**
     * @brief Convert a std::vector to a open62541 Variant array
     * @param value the variant to fill
-    * @param userval the vector to copy from
+    * @param uservec the vector to copy from
     */
    void convertToOPC(UA_Variant *value,
                      const std::vector<std::string> *uservec);
@@ -803,7 +810,7 @@ public:
     * Set the Type by name of the objecttype, at the time of writting this
     * there are two possibilities: "base" and "folder"
     * @brief Set the object type
-    * @param typename The name of the type of our object
+    * @param objecttypename The name of the type of our object
     * @return True if found and set, else false
     */
    bool setObjectType(std::string objecttypename);
@@ -980,7 +987,7 @@ public:
 
    /**
     * @brief Set if the Method is executable
-    * @param true if the method should be executable, else false
+    * @param executable true if the method should be executable, else false
     */
    void setExecutable(bool executable);
 
