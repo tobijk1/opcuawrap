@@ -65,7 +65,7 @@ public:
     */
    OpcUAServer(uint16_t sport = 4840);
    /**
-    * @brief ~OpcUAServer destructor for the Server object, if the server is
+    * @brief OpcUAServer destructor for the Server object, if the server is
     * running, call terminate() first
     */
    virtual ~OpcUAServer();
